@@ -75,3 +75,7 @@ All detailed system documentation is available inside `/docs`:
 6. Health check validation
 
 ---
+
+## 👨‍💻 Author
+
+DevOps Assignment Project – Production Deployment System
