@@ -1,13 +1,16 @@
-name: FastAPI Continuous Integration
+name: FastAPI CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+
+env:
+  PROJECT_PATH: /opt/fastapi-app
 
 jobs:
   test:
+    name: Run Tests
     runs-on: ubuntu-latest
 
     services:
@@ -20,7 +23,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres -d test_db"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -36,24 +39,83 @@ jobs:
           --health-retries 5
 
     steps:
-    - name: Checkout repository code
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-        cache: 'pip'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f app/requirements.txt ]; then pip install -r app/requirements.txt; fi
-        pip install pytest httpx
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
 
-    - name: Run Pytest Automation Suite
-      env:
-        DATABASE_URL: postgresql://postgres:secure_password123@localhost:5432/test_db
-        REDIS_URL: redis://localhost:6379/0
-      run: |
-        pytest
+          if [ -f app/requirements.txt ]; then
+            pip install -r app/requirements.txt
+          elif [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+          pip install pytest httpx
+
+      - name: Run Test Suite
+        env:
+          DATABASE_URL: postgresql://postgres:secure_password123@localhost:5432/test_db
+          REDIS_URL: redis://localhost:6379/0
+        run: |
+          pytest -v --tb=short
+
+  deploy:
+    name: Deploy to VPS
+    needs: test
+
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy Application
+        uses: appleboy/ssh-action@v1.2.0
+
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+
+          script: |
+            set -e
+
+            cd ${{ env.PROJECT_PATH }}
+
+            echo "Updating source code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            echo "Building latest containers..."
+            docker compose build
+
+            echo "Starting updated services..."
+            docker compose up -d --remove-orphans
+
+            echo "Waiting for application..."
+
+            for i in {1..20}; do
+              if curl -fs http://localhost/health > /dev/null; then
+                echo "Health check passed."
+                break
+              fi
+
+              echo "Waiting..."
+              sleep 3
+            done
+
+            echo "Cleaning unused images..."
+            docker image prune -af --filter "until=24h"
+
+            echo "Deployment completed successfully."
