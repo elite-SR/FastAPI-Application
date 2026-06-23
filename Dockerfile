@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY app/requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+# Install dependencies globally inside the builder stage
+RUN pip install --no-cache-dir -r requirements.txt
 
 # --- Stage 2: Final lightweight runtime ---
 FROM python:3.11-slim AS runtime
@@ -21,11 +22,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy installed dependencies from builder stage
-COPY --from=builder /root/.local /root/.local
+# Copy system-wide python packages from builder stage directly to system site-packages
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 COPY app/ /app/app/
 
-ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
