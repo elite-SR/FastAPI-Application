@@ -57,6 +57,6 @@ def health_check():
     # If any underlying dependency is down, mark overall status as unhealthy
     if health_status["database"] != "healthy" or health_status["redis"] != "healthy":
         health_status["status"] = "unhealthy"
-        raise HTTPException(status_code=503, detail={"status": health_status, "errors": errors})
+        health_status["errors"] = errors
 
     return health_status
