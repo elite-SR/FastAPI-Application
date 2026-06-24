@@ -1,5 +1,9 @@
 # 🚀 FastAPI Production Deployment Project
 
+> [!NOTE]  
+> **Deployment Status Notice:**  
+> This project is currently not deployed on an active VPS. Consequently, the GitHub Actions deployment workflow stage (`deploy`) will show as failed until valid SSH secrets (`VPS_HOST`, `VPS_SSH_KEY`, etc.) are configured in the repository's Settings. The pipeline's automated tests (`test`) execute and complete successfully in the runner environment.
+
 This project demonstrates a complete production-grade backend deployment using FastAPI, Docker, Nginx, PostgreSQL, Redis, and GitHub Actions CI/CD pipeline.
 
 ---
@@ -59,6 +63,7 @@ All detailed system documentation is available inside `/docs`:
 
 - ARCHITECTURE.md → System design
 - DEPLOYMENT.md → Deployment steps
+- CICD_PIPELINE.md → CI/CD pipeline automation
 - SECURITY.md → Security practices
 - SSL_SETUP.md → SSL configuration
 - BACKUP_STRATEGY.md → Backup system
