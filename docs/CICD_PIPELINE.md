@@ -1,14 +1,14 @@
-# 🤖 GitHub Actions CI/CD Pipeline Workflow
+# GitHub Actions CI/CD Pipeline Workflow
 
 > [!NOTE]  
-> **Deployment Status Notice:**  
+> **Deployment Status Notice**  
 > This project has **not** been linked to a live Virtual Private Server (VPS) host yet. As a result, the `deploy` stage of the GitHub Actions workflow will fail (or skip) because the connection variables (`VPS_HOST`, `VPS_SSH_KEY`, etc.) are not configured as secrets in the repository. The testing stage (`test`), however, runs inside GitHub's container environment and passes successfully.
 
 This project implements a fully automated Continuous Integration and Continuous Deployment (CI/CD) pipeline via **GitHub Actions**. Every time code is pushed to the `main` branch, the pipeline automatically tests the codebase and deploys it to the remote VPS host.
 
 ---
 
-## 🔄 The CI/CD Pipeline Workflow
+## The CI/CD Pipeline Workflow
 
 ```mermaid
 graph TD
@@ -21,7 +21,7 @@ graph TD
     end
     
     RunPytest -->|Passed| DeployJob[Job 2: Deploy to VPS]
-    RunPytest -->|Failed| StopPipeline[❌ Stop Pipeline & Alert Developer]
+    RunPytest -->|Failed| StopPipeline[Stop Pipeline & Alert Developer]
     
     subgraph Production Server [Virtual Private Server Host]
         DeployJob --> SSH[SSH Connection via Key]
@@ -35,14 +35,14 @@ graph TD
 
 ---
 
-## 🛠️ Pipeline Stages Explained
+## Pipeline Stages Explained
 
-### 1. The Validation Stage (`test`)
+### 1. The Validation Stage (test)
 This stage runs in a clean, ephemeral Ubuntu environment on GitHub's runners. It guarantees that code changes do not break core APIs before touching production.
 * **Service Containers:** Rather than mocking database layers, GitHub Actions spins up real, isolated instances of PostgreSQL and Redis.
 * **Testing:** Installs dependencies (`fastapi`, `psycopg2-binary`, `redis`, etc.) and runs `pytest` against the application endpoints to verify health checks and system responses.
 
-### 2. The Deployment Stage (`deploy`)
+### 2. The Deployment Stage (deploy)
 If and only if the test suite completes with a passing grade, the deployment pipeline triggers:
 * **Secure Handshake:** Connects to the host VPS using SSH keys.
 * **Graceful Rebuild:** Fetches the updated code, rebuilds the application containers, and restarts the services.
@@ -51,7 +51,7 @@ If and only if the test suite completes with a passing grade, the deployment pip
 
 ---
 
-## 🔑 Required GitHub Secrets Configuration
+## Required GitHub Secrets Configuration
 
 To run this pipeline successfully, you must register your server credentials as **Encrypted Secrets** in your GitHub Repository. 
 
@@ -68,6 +68,7 @@ To run this pipeline successfully, you must register your server credentials as 
 
 ---
 
-## 🔍 How to Monitor Builds
+## How to Monitor Builds
 * Every run can be reviewed under the **Actions** tab of your repository.
 * Detailed step-by-step stdout/stderr output is available for both the runner tests and remote SSH commands to make debugging deployment errors straightforward.
+

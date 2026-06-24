@@ -1,14 +1,14 @@
-# 🚀 FastAPI Production Deployment Project
+# FastAPI Production Deployment Project
 
 > [!NOTE]  
-> **Deployment Status Notice:**  
-> This project is currently not deployed on an active VPS. Consequently, the GitHub Actions deployment workflow stage (`deploy`) will show as failed until valid SSH secrets (`VPS_HOST`, `VPS_SSH_KEY`, etc.) are configured in the repository's Settings. The pipeline's automated tests (`test`) execute and complete successfully in the runner environment.
+> **Deployment Status Notice**  
+> This project is currently not deployed on an active VPS. Consequently, the GitHub Actions deployment workflow stage (deploy) will show as failed until valid SSH secrets (VPS_HOST, VPS_SSH_KEY, etc.) are configured in the repository's Settings. The pipeline's automated tests (test) execute and complete successfully in the runner environment.
 
-This project demonstrates a complete production-grade backend deployment using FastAPI, Docker, Nginx, PostgreSQL, Redis, and GitHub Actions CI/CD pipeline.
+This repository demonstrates a complete, production-grade backend deployment using FastAPI, Docker, Nginx, PostgreSQL, Redis, and a GitHub Actions CI/CD pipeline.
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 This system is designed to simulate real-world production infrastructure with:
 
@@ -22,13 +22,13 @@ This system is designed to simulate real-world production infrastructure with:
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
-GitHub → GitHub Actions → VPS → Docker Compose → Nginx → FastAPI → PostgreSQL + Redis
+GitHub -> GitHub Actions -> VPS -> Docker Compose -> Nginx -> FastAPI -> PostgreSQL + Redis
 
 ---
 
-## ⚙️ Key Features
+## Key Features
 
 - Fully containerized microservice architecture
 - Automated CI/CD pipeline
@@ -40,7 +40,7 @@ GitHub → GitHub Actions → VPS → Docker Compose → Nginx → FastAPI → P
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Root Endpoint
 GET /
@@ -57,20 +57,21 @@ Checks:
 
 ---
 
-## 📁 Documentation Structure
+## Documentation Structure
 
-All detailed system documentation is available inside `/docs`:
+All detailed system documentation is available inside the `/docs` directory:
 
-- ARCHITECTURE.md → System design
-- DEPLOYMENT.md → Deployment steps
-- CICD_PIPELINE.md → CI/CD pipeline automation
-- SECURITY.md → Security practices
-- SSL_SETUP.md → SSL configuration
-- BACKUP_STRATEGY.md → Backup system
+- ARCHITECTURE.md: Detailed system design and request routing
+- DEPLOYMENT.md: Step-by-step server deployment instructions
+- CICD_PIPELINE.md: CI/CD automation workflow and secrets configuration
+- SECURITY.md: Host security and container isolation practices
+- SSL_SETUP.md: SSL certificate configuration guide
+- BACKUP_STRATEGY.md: Automated backup policies and recovery plans
+- FAIL2BAN.md: Intrusion prevention system configuration
 
 ---
 
-## 🚀 How It Works
+## Deployment Flow
 
 1. Code pushed to GitHub
 2. GitHub Actions runs tests
@@ -78,5 +79,6 @@ All detailed system documentation is available inside `/docs`:
 4. SSH connection to VPS
 5. Docker containers updated
 6. Health check validation
+
 
 ---

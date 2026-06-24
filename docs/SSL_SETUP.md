@@ -1,10 +1,10 @@
-# 🔐 SSL/TLS Configuration Strategy
+# SSL/TLS Configuration Strategy
 
 Securing server communications via SSL/TLS is critical for protecting customer data and avoiding security warnings in browsers. This document outlines the SSL setup strategy for both domain-ready production systems and environments without domain names.
 
 ---
 
-## 🌍 Strategy Overview
+## Strategy Overview
 
 ```mermaid
 graph TD
@@ -17,12 +17,12 @@ graph TD
 
 ---
 
-## ❌ Scenario A: No Domain Name Available
+## Scenario A: No Domain Name Available
 
 If you are deploying for testing or evaluation purposes and do not have a public domain name registered, use one of the following methods:
 
-### 🟡 Option 1: Self-Signed SSL Certificates (Testing Only)
-You can generate your own cryptographic keypair directly on the server. However, modern browsers will display a **"Your connection is not private" warning** because the certificate is not signed by a trusted Certificate Authority (CA).
+### Option 1: Self-Signed SSL Certificates (Testing Only)
+You can generate your own cryptographic keypair directly on the server. However, modern browsers will display a "Your connection is not private" warning because the certificate is not signed by a trusted Certificate Authority (CA).
 
 #### 1. Generate the Key and Certificate:
 Run the following openssl command on your VPS:
@@ -51,7 +51,7 @@ server {
 
 ---
 
-### 🟡 Option 2: Cloudflare Edge SSL (Recommended Option)
+### Option 2: Cloudflare Edge SSL (Recommended Option)
 If you own a domain name but cannot point it directly to the host yet, or want Cloudflare to handle SSL automatically, you can use Cloudflare's free DNS proxy.
 
 1. **Register** your domain name with Cloudflare.
@@ -63,7 +63,7 @@ If you own a domain name but cannot point it directly to the host yet, or want C
 
 ---
 
-## 🌐 Scenario B: Domain Name Available (Standard Production Method)
+## Scenario B: Domain Name Available (Standard Production Method)
 
 This is the standard approach for production-grade environments. We use **Let's Encrypt** to issue a free, globally-trusted SSL certificate.
 
@@ -102,7 +102,7 @@ Your certificate keys will be safely stored under:
 
 ---
 
-## 🐳 Docker Compose Mounting Strategy
+## Docker Compose Mounting Strategy
 
 To allow NGINX running inside a container to read certificates generated on the host system, we mount the Let's Encrypt directory as a read-only volume.
 

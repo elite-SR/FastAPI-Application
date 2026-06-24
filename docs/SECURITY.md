@@ -1,10 +1,10 @@
-# 🔐 Production Security Hardening Plan
+# Production Security Hardening Plan
 
 Securing a VPS in a production environment requires a multi-layered approach. Below is the security hardening plan configured for this application stack.
 
 ---
 
-## 🛡️ Host Server Level Hardening
+## Host Server Level Hardening
 
 ### 1. Secure SSH Access
 By default, standard passwords can be targeted by brute-force attacks. We disable password authentication entirely, allowing only cryptographic SSH keys.
@@ -26,7 +26,7 @@ By default, standard passwords can be targeted by brute-force attacks. We disabl
   ```
 
 ### 2. Configure Host Firewall (UFW)
-A firewall blocks all ports that are not explicitly whitelisted. We configure the Uncomplicated Firewall (UFW) to only expose SSH (port `22`), HTTP (port `80`), and HTTPS (port `443`):
+A firewall blocks all ports that are not explicitly whitelisted. We configure the Uncomplicated Firewall (UFW) to only expose SSH (port 22), HTTP (port 80), and HTTPS (port 443):
 
 ```bash
 # Set default rules to deny all incoming traffic
@@ -47,7 +47,7 @@ sudo ufw status verbose
 
 ---
 
-## 🐳 Docker and Container Level Isolation
+## Docker and Container Level Isolation
 
 ### 1. Network Boundary Isolation
 Our databases (`db` and `redis`) handle sensitive persistent data. They are configured on a private bridge network (`production_network`).
@@ -59,7 +59,7 @@ Our databases (`db` and `redis`) handle sensitive persistent data. They are conf
 * This ensures that only local processes on the VPS host or containers inside `production_network` can communicate with the databases.
 
 ### 2. Non-Root Container Execution
-Running containers as `root` is a security risk. If a container is compromised, the attacker could gain root privileges on the host system.
+Running containers as root is a security risk. If a container is compromised, the attacker could gain root privileges on the host system.
 * Our `Dockerfile` addresses this by generating a specific user account:
   ```dockerfile
   RUN useradd -u 8888 appuser && chown -R appuser:appuser /app
@@ -69,7 +69,7 @@ Running containers as `root` is a security risk. If a container is compromised, 
 
 ---
 
-## 🔑 Environment Secrets Protection
+## Environment Secrets Protection
 
 * **Strict gitignore rules:** All system passwords, database URLs, and environment configuration profiles are excluded from git tracking via `.gitignore`.
 * **Zero Hardcoded Secrets:** Credentials are dynamically resolved at runtime from the local host system environment variables.

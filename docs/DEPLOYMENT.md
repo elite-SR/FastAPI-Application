@@ -1,10 +1,10 @@
-# 🚀 Production Deployment Manual
+# Production Deployment Manual
 
 This guide describes how to deploy the FastAPI application stack onto a fresh Linux/Ubuntu Virtual Private Server (VPS). 
 
 ---
 
-## 📋 Infrastructure & Server Requirements
+## Infrastructure & Server Requirements
 
 Before executing the deployment, ensure your target host meets the following specifications:
 * **Operating System:** Ubuntu 22.04 LTS (or any debian-based system).
@@ -14,7 +14,7 @@ Before executing the deployment, ensure your target host meets the following spe
 
 ---
 
-## 🛠️ Step-by-Step Server Setup
+## Step-by-Step Server Setup
 
 ### Step 1: Clone the Application Repository
 Log into your target VPS host via SSH and clone the repository. We recommend placing production services in the `/opt/` workspace directory:
@@ -80,7 +80,7 @@ docker compose logs web --tail=50
 
 ---
 
-## 📡 Deployment Validation & Health Verification
+## Deployment Validation & Health Verification
 
 Once the containers are running, execute a health check command to verify that FastAPI can successfully connect to PostgreSQL and Redis:
 
@@ -104,7 +104,7 @@ Content-Type: application/json
 
 ---
 
-## 🛠️ Deployment Troubleshooting Guide
+## Deployment Troubleshooting Guide
 
 If the system returns an unhealthy status, follow these steps to isolate the issue:
 

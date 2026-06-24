@@ -1,10 +1,10 @@
-# 📦 Production Backup & Recovery Strategy
+# Production Backup and Recovery Strategy
 
 In any production environment, data integrity is of paramount importance. This document details our automated backup policy, manual snapshot capabilities, and the disaster recovery protocol for the PostgreSQL database container.
 
 ---
 
-## 📅 Backup Architecture & Schedule
+## Backup Architecture and Schedule
 
 ```mermaid
 graph TD
@@ -18,7 +18,7 @@ graph TD
 
 ---
 
-## 🗄️ 1. Manual Backup & Restore (On-Demand)
+## 1. Manual Backup and Restore (On-Demand)
 
 Manual snapshots are typically executed before run-time deployments, server maintenance, or system migrations.
 
@@ -38,7 +38,7 @@ gunzip -c /opt/backups/manual_backup_xxxx-xx-xx.sql.gz | docker exec -i fastapi-
 
 ---
 
-## 🤖 2. Automated Daily Backups
+## 2. Automated Daily Backups
 
 We utilize a simple, robust shell script integrated with the host's `cron` daemon to run automated nightly backups.
 
@@ -92,7 +92,7 @@ Add the following line to schedule the backup to execute every night at **2:00 A
 
 ---
 
-## 🚨 3. Disaster Recovery Plan
+## 3. Disaster Recovery Plan
 
 If the server crashes, database corruption occurs, or data is accidentally modified, follow this recovery roadmap:
 
